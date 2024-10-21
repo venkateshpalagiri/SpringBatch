@@ -6,6 +6,9 @@ import org.springframework.batch.item.ItemProcessor;
 public class EmployeeProcessor implements ItemProcessor<Employee,Employee> {
     @Override
     public Employee process(Employee item) throws Exception {
-        return item;
+        if(item.getCountry().equals("Canada")){
+            return item;
+        }
+        return null;
     }
 }
