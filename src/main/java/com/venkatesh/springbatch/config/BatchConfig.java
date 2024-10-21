@@ -2,12 +2,15 @@ package com.venkatesh.springbatch.config;
 
 import com.venkatesh.springbatch.entity.Employee;
 import com.venkatesh.springbatch.processor.EmployeeProcessor;
+import com.venkatesh.springbatch.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -15,6 +18,9 @@ import org.springframework.core.io.FileSystemResource;
 @Configuration
 @RequiredArgsConstructor
 public class BatchConfig {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Bean
     public FlatFileItemReader<Employee> itemReader(){
@@ -47,5 +53,14 @@ public class BatchConfig {
     @Bean
     public EmployeeProcessor employeeProcessor(){
         return new EmployeeProcessor();
+    }
+
+    //Item Writer
+    @Bean
+    public RepositoryItemWriter<Employee> itemWriter(){
+        RepositoryItemWriter<Employee> itemWriter=new RepositoryItemWriter<>();
+        itemWriter.setRepository(employeeRepository);
+        itemWriter.setMethodName("save");
+        return itemWriter;
     }
 }
