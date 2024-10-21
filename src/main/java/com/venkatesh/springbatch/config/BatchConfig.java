@@ -1,6 +1,7 @@
 package com.venkatesh.springbatch.config;
 
 import com.venkatesh.springbatch.entity.Employee;
+import com.venkatesh.springbatch.processor.EmployeeProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
@@ -41,5 +42,10 @@ public class BatchConfig {
         lineMapper.setFieldSetMapper(fieldSetMapper);
 
         return lineMapper;
+    }
+    //Item Processor
+    @Bean
+    public EmployeeProcessor employeeProcessor(){
+        return new EmployeeProcessor();
     }
 }
