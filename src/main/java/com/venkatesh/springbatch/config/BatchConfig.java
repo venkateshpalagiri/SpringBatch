@@ -4,7 +4,9 @@ import com.venkatesh.springbatch.entity.Employee;
 import com.venkatesh.springbatch.processor.EmployeeProcessor;
 import com.venkatesh.springbatch.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.data.RepositoryItemWriter;
@@ -80,6 +82,14 @@ public class BatchConfig {
                 .reader(itemReader())
                 .processor(employeeProcessor())
                 .writer(itemWriter())
+                .build();
+    }
+
+    //Job
+    @Bean
+    public Job job(){
+        return new JobBuilder("csvJob",jobRepository)
+                .start(step1())
                 .build();
     }
 }
